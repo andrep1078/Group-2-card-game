@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<script>
-			var game = new Phaser.Game(1200, 700, Phaser.AUTO, "game", {preload: preload, create: create, update: update});
+			var game = new Phaser.Game('100%', '100%', Phaser.AUTO, "game", {preload: preload, create: create, update: update});
 			
 			//array for flags
 			var flags = ['nederlands', 'germany', 'china', 'romania'];
@@ -23,6 +23,11 @@
 			var player2sprite;
 			var player3sprite;
 			var player4sprite;
+
+			//vars for deck sprites
+
+			var situationDeck;
+			var reactionDeck;
 
 			//players cards
 			var player1 = [];
@@ -66,6 +71,10 @@
 				//loading sprites for reaction deck
 				game.load.spritesheet('reaction', 'sprites/reactions.png', 80, 120, 60);
 
+				//loading sprites for decks
+				game.load.image('reactionDeck', 'sprites/reactionBack.png');
+				game.load.image('situationDeck', 'sprites/situationBack.png');
+
 			}
 			
 			function create () {
@@ -91,6 +100,14 @@
 				for( var i=0; i<4; i++) {
 					game.add.sprite(xPositions[i], 580, flags[i]);
 				}
+
+				//add sprites of decks
+
+				situationDeck = game.add.sprite(xPositions[1], game.world.centerY, 'situationDeck');
+				situationDeck.anchor.set(0.5, 1);
+
+				reactionDeck = game.add.sprite(xPositions[3], game.world.centerY, 'reactionDeck');
+				reactionDeck.anchor.set(0.5, 1);
 
 				//shuffle situations deck
 				/*for( var i = 0; i < 50; i++) {
