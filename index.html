@@ -15,8 +15,8 @@
 			var flags = ['nederlands', 'germany', 'china', 'romania'];
 
 			//arrays position values for flags
-			var xPositions = [350, 1390, 1160, 110];
-			var yPositions = [660, 650, 60, 80];
+			var xPositions = [350, 1340, 1160, 160];
+			var yPositions = [660, 730, 60, 7];
 			
 			//variables for sprite of players
 			/*var player1sprite;
@@ -105,7 +105,7 @@
 
 				//add sprites to flags
 				for( var i=0; i<4; i++) {
-					var angle = [0, -270, -180, -90];
+					var angle = [0, -90, -180, 90];
 					var flag = game.add.sprite(xPositions[i], yPositions[i], flags[i]);
 					flag.angle = angle[i];
 				}
@@ -122,10 +122,14 @@
 
 				nextSituation();
 
+				//enabling key board and click
 				situationDeck.inputEnabled = true;
-				situationDeck.events.onInputDown.add(nextSituation, this); 	
+				situationDeck.events.onInputDown.add(nextSituation, this); 
 
-				changeReaction = game.input.keyboard.addKey(Phaser.Keyboard.A);
+				reactionDeck.inputEnabled = true;
+				reactionDeck.events.onInputDown.add(playerDraws, this); 
+
+				/*changeReaction = game.input.keyboard.addKey(Phaser.Keyboard.A);
 				changeReaction.onDown.add(function () {nextReaction(player1, 0)}, this);
 
 				changeReaction = game.input.keyboard.addKey(Phaser.Keyboard.S);
@@ -135,7 +139,7 @@
 				changeReaction.onDown.add(function () {nextReaction(player3, 2)}, this);
 
 				changeReaction = game.input.keyboard.addKey(Phaser.Keyboard.F);
-				changeReaction.onDown.add(function () {nextReaction(player4, 3)}, this);
+				changeReaction.onDown.add(function () {nextReaction(player4, 3)}, this);*/
 
 				//layout update P1
 				for( var i=0; i<5; i++) {
@@ -157,6 +161,7 @@
 					var xPosition = [500, 628, 756, 884, 1012];
 					var card = game.add.sprite(xPosition[i], 100, 'reactionDeck');
 					card.anchor.set(0.5, 0.5);
+					card.angle = 180;
 				}
 
 				//layout update P2
@@ -166,7 +171,6 @@
 					card.anchor.set(0.5, 0.5);
 					card.angle = 90;
 				}
-
 			}
 
 			function nextSituation () {
@@ -180,13 +184,10 @@
 
 					var discardCard = situations.splice(randomNumber, 1);
 					discardSituations.push(discardCard);
-
-					console.log (situations);
 				}
-			
 			}
 
-			function nextReaction (player, xPosition) {
+			/*function nextReaction (player, xPosition) {
 				var yPositions = [450, 350, 250, 150, 50];
 
 				for ( var i =0; i<5; i++) {
@@ -197,12 +198,22 @@
 					
 					var discardCard = reactions.splice(reactions[randomNumber], 1);
 					player.push(discardCard);
-
 				}
-			}
+			}*/
 
 			function playerDraws () {
+				var reactionSprite;
 
+				if (player1.length < 5) {
+					
+					var randomNumber = Math.floor(Math.random()*reactions.length);
+
+					reactionSprite = game.add.sprite(1012, 630, 'reaction');
+					reactionSprite.frame = reactions[randomNumber];
+
+					var discardCard = reactions.splice(reactions[randomNumber], 1);
+					player1.push(discardCard);
+				}
 			}
 
 			function update () {
