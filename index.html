@@ -14,14 +14,15 @@
 			//array for flags
 			var flags = ['nederlands', 'germany', 'china', 'romania'];
 
-			//array of x position values for players and flags
-			var xPositions = [30, 360, 760, 1090];
+			//arrays position values for flags
+			var xPositions = [350, 1390, 1160, 110];
+			var yPositions = [660, 650, 60, 80];
 			
 			//variables for sprite of players
-			var player1sprite;
+			/*var player1sprite;
 			var player2sprite;
 			var player3sprite;
-			var player4sprite;
+			var player4sprite;*/
 
 			//vars for deck sprites
 
@@ -59,10 +60,10 @@
 				game.load.image('romania', 'sprites/romania.png');
 				
 				//loading graphics for players
-				game.load.image('player1sprite', 'sprites/player1.png');
+				/*game.load.image('player1sprite', 'sprites/player1.png');
 				game.load.image('player2sprite', 'sprites/player2.png');
 				game.load.image('player3sprite', 'sprites/player3.png');
-				game.load.image('player4sprite', 'sprites/player4.png');
+				game.load.image('player4sprite', 'sprites/player4.png');*/
 
 				//loading sprites for situation deck
 				game.load.spritesheet('situation','sprites/situations.png', 128, 200, 15);
@@ -87,10 +88,10 @@
 				background.height = game.world.height;
 
 				//add player sprites
-				player1sprite = game.add.sprite(xPositions[0], 630, 'player1sprite');
+				/*player1sprite = game.add.sprite(xPositions[0], 630, 'player1sprite');
 				player2sprite = game.add.sprite(xPositions[1], 630, 'player2sprite');
 				player3sprite = game.add.sprite(xPositions[2], 630, 'player3sprite');
-				player4sprite = game.add.sprite(xPositions[3], 630, 'player4sprite');
+				player4sprite = game.add.sprite(xPositions[3], 630, 'player4sprite');*/
 				
 				//shuffle flags
 				for( var i = 0; i < 10; i++) {
@@ -104,7 +105,9 @@
 
 				//add sprites to flags
 				for( var i=0; i<4; i++) {
-					game.add.sprite(xPositions[i], 580, flags[i]);
+					var angle = [0, -270, -180, -90];
+					var flag = game.add.sprite(xPositions[i], yPositions[i], flags[i]);
+					flag.angle = angle[i];
 				}
 
 				//add sprites of decks
@@ -119,8 +122,8 @@
 
 				nextSituation();
 
-				situationSprite.inputEnabled = true;
-				situationSprite.events.onInputDown.add(nextSituation, this); 	
+				situationDeck.inputEnabled = true;
+				situationDeck.events.onInputDown.add(nextSituation, this); 	
 
 				changeReaction = game.input.keyboard.addKey(Phaser.Keyboard.A);
 				changeReaction.onDown.add(function () {nextReaction(player1, 0)}, this);
@@ -134,23 +137,52 @@
 				changeReaction = game.input.keyboard.addKey(Phaser.Keyboard.F);
 				changeReaction.onDown.add(function () {nextReaction(player4, 3)}, this);
 
+				//layout update P1
+				for( var i=0; i<5; i++) {
+					var xPosition = [500, 628, 756, 884, 1012];
+					var card = game.add.sprite(xPosition[i], 630, 'reactionDeck');
+					card.anchor.set(0.5, 0.5);
+				}
+
+				//layout update P2
+				for( var i=0; i<5; i++) {
+					var yPosition = [70, 198, 326, 454, 582];
+					var card = game.add.sprite(1300, yPosition[i], 'reactionDeck');
+					card.anchor.set(0.5, 0.5);
+					card.angle = -90;
+				}
+
+				//layout update P3
+				for( var i=0; i<5; i++) {
+					var xPosition = [500, 628, 756, 884, 1012];
+					var card = game.add.sprite(xPosition[i], 100, 'reactionDeck');
+					card.anchor.set(0.5, 0.5);
+				}
+
+				//layout update P2
+				for( var i=0; i<5; i++) {
+					var yPosition = [150, 278, 406, 534, 662];
+					var card = game.add.sprite(200, yPosition[i], 'reactionDeck');
+					card.anchor.set(0.5, 0.5);
+					card.angle = 90;
+				}
+
 			}
 
 			function nextSituation () {
 
-				var randomNumber = Math.floor(Math.random()*situations.length);
-				
-				situationSprite = game.add.sprite(game.world.centerX, game.world.centerY, 'situation');
-				situationSprite.frame = situations[randomNumber];
-				situationSprite.anchor.set(0.5, 0.5);
+				if ( situations.length != 0) {
+					var randomNumber = Math.floor(Math.random()*situations.length);
+					
+					situationSprite = game.add.sprite(756, game.world.centerY, 'situation');
+					situationSprite.frame = situations[randomNumber];
+					situationSprite.anchor.set(0.5, 0.5);
 
-				console.log('number: ' + situations[randomNumber]);
+					var discardCard = situations.splice(randomNumber, 1);
+					discardSituations.push(discardCard);
 
-				var discardCard = situations.splice(randomNumber, 1);
-				discardSituations.push(discardCard);
-
-				console.log(situations);
-				console.log('index: ' + randomNumber);
+					console.log (situations);
+				}
 			
 			}
 
@@ -163,11 +195,14 @@
 					var reactionSprite = game.add.sprite(xPositions[xPosition], yPositions[i], 'reaction');
 					reactionSprite.frame = reactions[randomNumber];
 					
-					
 					var discardCard = reactions.splice(reactions[randomNumber], 1);
 					player.push(discardCard);
 
 				}
+			}
+
+			function playerDraws () {
+
 			}
 
 			function update () {
