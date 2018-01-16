@@ -1,0 +1,34 @@
+var preload = function (game) {}
+
+preload.prototype = {
+    preload: function () {
+        //loading flag sprites
+        this.game.load.image('nederlands', 'sprites/nederlands.png');
+        this.game.load.image('germany', 'sprites/germany.png');
+        this.game.load.image('china', 'sprites/china.png');
+        this.game.load.image('romania', 'sprites/romania.png');
+            
+        //loading graphics for players
+        /*game.load.image('player1sprite', 'sprites/player1.png');
+        game.load.image('player2sprite', 'sprites/player2.png');
+        game.load.image('player3sprite', 'sprites/player3.png');
+        game.load.image('player4sprite', 'sprites/player4.png');*/
+
+        //loading sprites for situation deck
+        this.game.load.spritesheet('situation','sprites/situations.png', 128, 200, 15);
+            
+        //loading sprites for reaction deck
+        this.game.load.spritesheet('reaction', 'sprites/reactions.png', 128, 200, 60);
+
+        //loading sprites for decks
+        this.game.load.image('reactionDeck', 'sprites/reactionBack.png');
+        this.game.load.image('situationDeck', 'sprites/situationBack.png');
+
+        //load background
+        this.game.load.image('background', 'sprites/background.png');
+    },
+
+    create: function () {
+        this.game.state.start('theGame');
+    }
+}
