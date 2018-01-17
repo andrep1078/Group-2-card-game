@@ -160,6 +160,7 @@ theGame.prototype = {
 
             reactionSprite = this.game.add.sprite(1012, 630, 'reaction');
             reactionSprite.frame = reactions[randomNumber];
+            reactionSprite.anchor.set(0.5, 0.5);
 
             var discardCard = reactions.splice(reactions[randomNumber], 1);
             player1.push(discardCard);
