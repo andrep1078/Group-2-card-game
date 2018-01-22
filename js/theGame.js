@@ -41,6 +41,15 @@ var p2PlayedCard;
 var p3PlayedCard;
 var p4PlayedCard;
 
+var p1CardX;
+var p1CardY;
+var p2CardX;
+var p2CardY;
+var p3CardX;
+var p3CardY;
+var p4CardX;
+var p4CardY;
+
 var style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
 
 theGame.prototype = {
@@ -83,12 +92,6 @@ theGame.prototype = {
         //call the next situation function
         this.nextSituation();
 
-        //enabling key board and click
-         
-
-        reactionDeck.inputEnabled = true;
-        reactionDeck.events.onInputDown.add(this.playerDraws, this);
-
         this.player1Turn ();
         this.player2Turn ();
         this.player3Turn ();
@@ -103,10 +106,24 @@ theGame.prototype = {
     situation: function () {
         this.nextSituation();
 
+        p1CardX = p1PlayedCard.x;
+        p1CardY = p1PlayedCard.y;
+        p2CardX = p2PlayedCard.x;
+        p2CardY = p2PlayedCard.y;
+        p3CardX = p3PlayedCard.x;
+        p3CardY = p3PlayedCard.y;
+        p4CardX = p4PlayedCard.x;
+        p4CardY = p4PlayedCard.y;
+
         p1PlayedCard.destroy();
         p2PlayedCard.destroy();
         p3PlayedCard.destroy();
         p4PlayedCard.destroy();
+
+        this.player1Turn ();
+        this.player2Turn ();
+        this.player3Turn ();
+        this.player4Turn ();
     },
 
     nextSituation: function () {
@@ -129,28 +146,12 @@ theGame.prototype = {
         situationDeck.events.onInputDown.removeAll();
     },
 
-    playerDraws: function () {
-        var reactionSprite;
-
-        if (player1.length < 5) {   
-            var randomNumber = Math.floor(Math.random()*reactions.length);
-
-            reactionSprite = this.game.add.sprite(500, 630, 'reaction');
-
-            reactionSprite.frame = reactions[randomNumber];
-            reactionSprite.anchor.set(0.5, 0.5);
-
-            var discardCard = reactions.splice(reactions[randomNumber], 1);
-            player1.push(discardCard);
-        }
-    },
-
     gameEnds: function () {
         this.game.state.start('theEnd');
     },
 
     player1Turn: function () {
-        p1Group = this.game.add.group();
+        p1Group = p1Group ? p1Group : this.game.add.group();
 
         if (p1Group.children.length == 0) {
             for( var i=0; i<5; i++) {
@@ -171,7 +172,7 @@ theGame.prototype = {
 
         else {
             var randomNumber = Math.floor(Math.random()*reactions.length);
-            reactionSprite = this.game.add.sprite(1012, 630, 'reaction');
+            reactionSprite = this.game.add.sprite(p1CardX, p1CardY + 60, 'reaction');
             reactionSprite.frame = reactions[randomNumber];
             reactionSprite.anchor.set(0.5, 0.5);
 
@@ -184,7 +185,7 @@ theGame.prototype = {
     },
 
     player2Turn: function () {
-        p2Group = this.game.add.group();
+        p2Group = p2Group ? p2Group : this.game.add.group();
 
         if (p2Group.children.length == 0) {
             for( var i=0; i<5; i++) {
@@ -207,7 +208,7 @@ theGame.prototype = {
 
         else {
             var randomNumber = Math.floor(Math.random()*reactions.length);
-            reactionSprite = this.game.add.sprite(1300, 582, 'reaction');
+            reactionSprite = this.game.add.sprite(p2CardX + 60, p2CardY, 'reaction');
             reactionSprite.frame = reactions[randomNumber];
             reactionSprite.anchor.set(0.5, 0.5);
             reactionSprite.angle = -90;
@@ -219,7 +220,7 @@ theGame.prototype = {
     },
 
     player3Turn: function () {
-        p3Group = this.game.add.group();
+        p3Group = p3Group ? p3Group : this.game.add.group();
 
         if (p3Group.children.length == 0) {
             for( var i=0; i<5; i++) {
@@ -242,7 +243,7 @@ theGame.prototype = {
 
         else {
             var randomNumber = Math.floor(Math.random()*reactions.length);
-            reactionSprite = this.game.add.sprite(500, 100, 'reaction');
+            reactionSprite = this.game.add.sprite(p3CardX, p3CardY - 60, 'reaction');
             reactionSprite.frame = reactions[randomNumber];
             reactionSprite.anchor.set(0.5, 0.5);
             reactionSprite.angle = 180;
@@ -254,7 +255,7 @@ theGame.prototype = {
     },
 
     player4Turn: function () {
-        p4Group = this.game.add.group();
+        p4Group = p4Group ? p4Group : this.game.add.group();
 
         if (p4Group.children.length == 0) {
             for( var i=0; i<5; i++) {
@@ -278,7 +279,7 @@ theGame.prototype = {
 
         else {
             var randomNumber = Math.floor(Math.random()*reactions.length);
-            reactionSprite = this.game.add.sprite(200, 662, 'reaction');
+            reactionSprite = this.game.add.sprite(p4CardX - 60, p4CardY, 'reaction');
             reactionSprite.frame = reactions[randomNumber];
             reactionSprite.anchor.set(0.5, 0.5);
             reactionSprite.angle = 90;
@@ -319,11 +320,10 @@ theGame.prototype = {
             var currentCard = playerGroup.children[i];
             currentCard.inputEnabled = true;
             currentCard.events.onInputDown.add(this.playerPlays, this);
-        } 
+        }
     },
 
     playerPlays: function (sprite, pointer) {
-        
 
         switch (counter) {
             case 0:
