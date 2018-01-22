@@ -1,5 +1,6 @@
 var theGame = function (game) {}
 
+var counter = 0;
 
 //array for flags
 var flags = ['nederlands', 'germany', 'china', 'romania'];
@@ -8,22 +9,15 @@ var flags = ['nederlands', 'germany', 'china', 'romania'];
 var xPositions = [350, 1340, 1160, 160];
 var yPositions = [660, 730, 60, 7];
 
-//variables for sprite of players
-/*var player1sprite;
-var player2sprite;
-var player3sprite;
-var player4sprite;*/
-
 //vars for deck sprites
 
 var situationDeck;
 var reactionDeck;
 
-//players cards
-var player1 = [];
-var player2 = [];
-var player3 = [];
-var player4 = [];
+var p1Group;
+var p2Group;
+var p3Group;
+var p4Group;
 
 //array for situations
 var situations = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
@@ -42,19 +36,19 @@ var changeReaction;
 
 var situationSprite;
 
+var p1PlayedCard;
+var p2PlayedCard;
+var p3PlayedCard;
+var p4PlayedCard;
+
+var style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+
 theGame.prototype = {
     create: function () {
         //add background
         var background = this.game.add.sprite(0, 0, 'background');
         background.width = this.game.world.width;
         background.height = this.game.world.height;
-
-
-        //add player sprites
-        /*player1sprite = game.add.sprite(xPositions[0], 630, 'player1sprite');
-        player2sprite = game.add.sprite(xPositions[1], 630, 'player2sprite');
-        player3sprite = game.add.sprite(xPositions[2], 630, 'player3sprite');
-        player4sprite = game.add.sprite(xPositions[3], 630, 'player4sprite');*/
             
         //shuffle flags
         for( var i = 0; i < 10; i++) {
@@ -68,9 +62,15 @@ theGame.prototype = {
 
         //add sprites to flags
         for( var i=0; i<4; i++) {
+            var pX = [380, 1290, 1130, 210];
+            var pY = [610, 700, 110, 37];
+
             var angle = [0, -90, -180, 90];
             var flag = this.game.add.sprite(xPositions[i], yPositions[i], flags[i]);
             flag.angle = angle[i];
+
+            var text = this.game.add.text(pX[i], pY[i], "2", style);
+            text.angle = angle[i];
         }
 
         //add sprites of decks
@@ -84,64 +84,40 @@ theGame.prototype = {
         this.nextSituation();
 
         //enabling key board and click
-        situationDeck.inputEnabled = true;
-        situationDeck.events.onInputDown.add(this.nextSituation, this); 
+         
 
         reactionDeck.inputEnabled = true;
-        reactionDeck.events.onInputDown.add(this.playerDraws, this); 
+        reactionDeck.events.onInputDown.add(this.playerDraws, this);
 
-        /*changeReaction = game.input.keyboard.addKey(Phaser.Keyboard.A);
-        changeReaction.onDown.add(function () {nextReaction(player1, 0)}, this);
+        this.player1Turn ();
+        this.player2Turn ();
+        this.player3Turn ();
+        this.player4Turn ();
+    },
 
-        changeReaction = game.input.keyboard.addKey(Phaser.Keyboard.S);
-        changeReaction.onDown.add(function () {nextReaction(player2, 1)}, this);
+    nextSituationEnable: function () {
+        situationDeck.inputEnabled = true;
+        situationDeck.events.onInputDown.add(this.situation, this);
+    },
 
-        changeReaction = game.input.keyboard.addKey(Phaser.Keyboard.D);
-        changeReaction.onDown.add(function () {nextReaction(player3, 2)}, this);
+    situation: function () {
+        this.nextSituation();
 
-        changeReaction = game.input.keyboard.addKey(Phaser.Keyboard.F);
-        changeReaction.onDown.add(function () {nextReaction(player4, 3)}, this);*/
-
-        //layout update P1
-        for( var i=0; i<5; i++) {
-            var xPosition = [500, 628, 756, 884, 1012];
-            var card = this.game.add.sprite(xPosition[i], 630, 'reactionDeck');
-            card.anchor.set(0.5, 0.5);
-        }
-
-        //layout update P2
-        for( var i=0; i<5; i++) {
-            var yPosition = [70, 198, 326, 454, 582];
-            var card = this.game.add.sprite(1300, yPosition[i], 'reactionDeck');
-            card.anchor.set(0.5, 0.5);
-            card.angle = -90;
-        }
-
-        //layout update P3
-        for( var i=0; i<5; i++) {
-            var xPosition = [500, 628, 756, 884, 1012];
-            var card = this.game.add.sprite(xPosition[i], 100, 'reactionDeck');
-            card.anchor.set(0.5, 0.5);
-            card.angle = 180;
-        }
-
-        //layout update P4
-        for( var i=0; i<5; i++) {
-            var yPosition = [150, 278, 406, 534, 662];
-            var card = this.game.add.sprite(200, yPosition[i], 'reactionDeck');
-            card.anchor.set(0.5, 0.5);
-            card.angle = 90;
-        }
+        p1PlayedCard.destroy();
+        p2PlayedCard.destroy();
+        p3PlayedCard.destroy();
+        p4PlayedCard.destroy();
     },
 
     nextSituation: function () {
+
         if ( situations.length != 0) {
             var randomNumber = Math.floor(Math.random()*situations.length);
-                
+            
             situationSprite = this.game.add.sprite(756, this.game.world.centerY, 'situation');
             situationSprite.frame = situations[randomNumber];
             situationSprite.anchor.set(0.5, 0.5);
-    
+
             var discardCard = situations.splice(randomNumber, 1);
             discardSituations.push(discardCard);
         }
@@ -149,16 +125,18 @@ theGame.prototype = {
         else {
             this.gameEnds();
         }
+
+        situationDeck.events.onInputDown.removeAll();
     },
 
     playerDraws: function () {
         var reactionSprite;
 
-        if (player1.length < 5) {
-                
+        if (player1.length < 5) {   
             var randomNumber = Math.floor(Math.random()*reactions.length);
 
-            reactionSprite = this.game.add.sprite(1012, 630, 'reaction');
+            reactionSprite = this.game.add.sprite(500, 630, 'reaction');
+
             reactionSprite.frame = reactions[randomNumber];
             reactionSprite.anchor.set(0.5, 0.5);
 
@@ -169,24 +147,216 @@ theGame.prototype = {
 
     gameEnds: function () {
         this.game.state.start('theEnd');
+    },
+
+    player1Turn: function () {
+        p1Group = this.game.add.group();
+
+        if (p1Group.children.length == 0) {
+            for( var i=0; i<5; i++) {
+                var xPosition = [500, 628, 756, 884, 1012];
+                /*var card = this.game.add.sprite(xPosition[i], 630, 'reactionDeck');
+                card.anchor.set(0.5, 0.5);*/
+    
+                var randomNumber = Math.floor(Math.random()*reactions.length);
+                reactionSprite = this.game.add.sprite(xPosition[i], 630, 'reaction');
+                reactionSprite.frame = reactions[randomNumber];
+                reactionSprite.anchor.set(0.5, 0.5);
+
+                p1Group.add(reactionSprite);
+
+                reactions.splice(reactions[randomNumber], 1);
+            }
+        }
+
+        else {
+            var randomNumber = Math.floor(Math.random()*reactions.length);
+            reactionSprite = this.game.add.sprite(1012, 630, 'reaction');
+            reactionSprite.frame = reactions[randomNumber];
+            reactionSprite.anchor.set(0.5, 0.5);
+
+            p1Group.add(reactionSprite);
+
+            reactions.splice(reactions[randomNumber], 1);
+        }
+
+        this.changeTurns(p1Group);
+    },
+
+    player2Turn: function () {
+        p2Group = this.game.add.group();
+
+        if (p2Group.children.length == 0) {
+            for( var i=0; i<5; i++) {
+                var yPosition = [70, 198, 326, 454, 582];
+                /*var card = this.game.add.sprite(1300, yPosition[i], 'reactionDeck');
+                card.anchor.set(0.5, 0.5);
+                card.angle = -90;*/
+    
+                var randomNumber = Math.floor(Math.random()*reactions.length);
+                reactionSprite = this.game.add.sprite(1300, yPosition[i], 'reaction');
+                reactionSprite.frame = reactions[randomNumber];
+                reactionSprite.anchor.set(0.5, 0.5);
+                reactionSprite.angle = -90;
+
+                p2Group.add(reactionSprite);
+
+                reactions.splice(reactions[randomNumber], 1);
+            }
+        }
+
+        else {
+            var randomNumber = Math.floor(Math.random()*reactions.length);
+            reactionSprite = this.game.add.sprite(1300, 582, 'reaction');
+            reactionSprite.frame = reactions[randomNumber];
+            reactionSprite.anchor.set(0.5, 0.5);
+            reactionSprite.angle = -90;
+
+            p2Group.add(reactionSprite);
+
+            reactions.splice(reactions[randomNumber], 1);
+        }
+    },
+
+    player3Turn: function () {
+        p3Group = this.game.add.group();
+
+        if (p3Group.children.length == 0) {
+            for( var i=0; i<5; i++) {
+                var xPosition = [500, 628, 756, 884, 1012];
+                /*var card = this.game.add.sprite(xPosition[i], 100, 'reactionDeck');
+                card.anchor.set(0.5, 0.5);
+                card.angle = 180;*/
+    
+                var randomNumber = Math.floor(Math.random()*reactions.length);
+                reactionSprite = this.game.add.sprite(xPosition[i], 100, 'reaction');
+                reactionSprite.frame = reactions[randomNumber];
+                reactionSprite.anchor.set(0.5, 0.5);
+                reactionSprite.angle = 180;
+
+                p3Group.add(reactionSprite);
+
+                reactions.splice(reactions[randomNumber], 1);
+            }
+        }
+
+        else {
+            var randomNumber = Math.floor(Math.random()*reactions.length);
+            reactionSprite = this.game.add.sprite(500, 100, 'reaction');
+            reactionSprite.frame = reactions[randomNumber];
+            reactionSprite.anchor.set(0.5, 0.5);
+            reactionSprite.angle = 180;
+
+            p3Group.add(reactionSprite);
+
+            reactions.splice(reactions[randomNumber], 1);
+        }
+    },
+
+    player4Turn: function () {
+        p4Group = this.game.add.group();
+
+        if (p4Group.children.length == 0) {
+            for( var i=0; i<5; i++) {
+                var yPosition = [150, 278, 406, 534, 662];
+                /*var card = this.game.add.sprite(200, yPosition[i], 'reactionDeck');
+                card.anchor.set(0.5, 0.5);
+                card.angle = 90;*/
+    
+                var randomNumber = Math.floor(Math.random()*reactions.length);
+                reactionSprite = this.game.add.sprite(200, yPosition[i], 'reaction');
+
+                reactionSprite.frame = reactions[randomNumber];
+                reactionSprite.anchor.set(0.5, 0.5);
+                reactionSprite.angle = 90;
+
+                p4Group.add(reactionSprite);
+
+                reactions.splice(reactions[randomNumber], 1);
+            }
+        }
+
+        else {
+            var randomNumber = Math.floor(Math.random()*reactions.length);
+            reactionSprite = this.game.add.sprite(200, 662, 'reaction');
+            reactionSprite.frame = reactions[randomNumber];
+            reactionSprite.anchor.set(0.5, 0.5);
+            reactionSprite.angle = 90;
+
+            p4Group.add(reactionSprite);
+
+            reactions.splice(reactions[randomNumber], 1);
+        }
+    },
+
+    changeTurns: function (playerGroup) {
+        p1Group = p1Group ? p1Group : this.game.add.group();
+        p2Group = p2Group ? p2Group : this.game.add.group();
+        p3Group = p3Group ? p3Group : this.game.add.group();
+        p4Group = p4Group ? p4Group : this.game.add.group();
+
+        for (var i=0; i<p1Group.children.length; i++) {
+            var currentCard = p1Group.children[i];
+            currentCard.events.onInputDown.removeAll();
+        }
+
+        for (var i=0; i<p2Group.children.length; i++) {
+            var currentCard = p2Group.children[i];
+            currentCard.events.onInputDown.removeAll();
+        }
+
+        for (var i=0; i<p3Group.children.length; i++) {
+            var currentCard = p3Group.children[i];
+            currentCard.events.onInputDown.removeAll();
+        }
+
+        for (var i=0; i<p4Group.children.length; i++) {
+            var currentCard = p4Group.children[i];
+            currentCard.events.onInputDown.removeAll();
+        }
+
+        for (var i=0; i<playerGroup.children.length; i++) {
+            var currentCard = playerGroup.children[i];
+            currentCard.inputEnabled = true;
+            currentCard.events.onInputDown.add(this.playerPlays, this);
+        } 
+    },
+
+    playerPlays: function (sprite, pointer) {
+        
+
+        switch (counter) {
+            case 0:
+                sprite.y -= 60;
+
+                this.changeTurns(p2Group);
+                p1PlayedCard = sprite;
+                break;
+            case 1:
+                sprite.x -= 60;
+
+                this.changeTurns(p3Group);
+                p2PlayedCard = sprite;
+                break;
+            case 2:
+                sprite.y += 60;
+
+                this.changeTurns(p4Group);
+                p3PlayedCard = sprite;
+                break;
+            case 3:
+                sprite.x += 60;
+
+                this.nextSituationEnable();
+                p4PlayedCard = sprite;
+                break;
+        }
+
+        if (counter == 3) {
+            counter = 0;
+        }
+        else {
+            counter++;
+        }
     }
 }
-
-
-/*function nextReaction (player, xPosition) {
-    var yPositions = [450, 350, 250, 150, 50];
-
-    for ( var i =0; i<5; i++) {
-        var randomNumber = Math.floor(Math.random()*reactions.length);
-            
-        var reactionSprite = game.add.sprite(xPositions[xPosition], yPositions[i], 'reaction');
-        reactionSprite.frame = reactions[randomNumber];
-            
-        var discardCard = reactions.splice(reactions[randomNumber], 1);
-        player.push(discardCard);
-    }
-}*/
-
-/*function update () {
-
-}*/
