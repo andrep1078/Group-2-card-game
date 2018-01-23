@@ -26,9 +26,13 @@ preload.prototype = {
 
         //load background
         this.game.load.image('background', 'sprites/background.png');
+
+        //load menu sprites
+        this.game.load.image('menuBackground', 'sprites/menuBackground.png');
+        this.game.load.image('startButton', 'sprites/startButton.png');
     },
 
     create: function () {
-        this.game.state.start('theGame');
+        this.game.state.start('mainMenu');
     }
 }

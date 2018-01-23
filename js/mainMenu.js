@@ -1,9 +1,9 @@
-var theEnd = function (game) {}
+var mainMenu = function(game) {}
 
-theEnd.prototype = {
+mainMenu.prototype = {
     create: function () {
         //add background
-        var background = this.game.add.sprite(0, 0, 'background');
+        var background = this.game.add.sprite(0, 0, 'menuBackground');
         background.width = this.game.world.width;
         background.height = this.game.world.height;
     }
