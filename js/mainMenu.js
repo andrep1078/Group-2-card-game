@@ -19,7 +19,7 @@ mainMenu.prototype = {
         var quitButton = this.game.add.sprite(this.game.world.width, this.game.world.height, 'quitButton');
         quitButton.anchor.set(1, 1);
         quitButton.width = 400;
-        startButton.height = 160;
+        quitButton.height = 160;
 
         quitButton.inputEnabled = true;
         quitButton.events.onInputDown.add(this.quitGame, this);
