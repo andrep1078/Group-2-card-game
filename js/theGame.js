@@ -89,6 +89,15 @@ theGame.prototype = {
         reactionDeck = this.game.add.sprite(950, this.game.world.centerY, 'reactionDeck');
         reactionDeck.anchor.set(0.5, 0.5);
 
+        //quit button
+        var quitButton = this.game.add.sprite(this.game.world.width, this.game.world.height, 'quitButton');
+        quitButton.anchor.set(1, 1);
+        quitButton.height = 50;
+        quitButton.width = 125;
+
+        quitButton.inputEnabled = true;
+        quitButton.events.onInputDown.add(this.quitGame, this);
+
         //call the next situation function
         this.nextSituation();
 
@@ -358,5 +367,9 @@ theGame.prototype = {
         else {
             counter++;
         }
+    },
+
+    quitGame: function () {
+        this.game.state.start ("theEnd");
     }
 }
