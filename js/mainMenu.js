@@ -8,7 +8,9 @@ mainMenu.prototype = {
         background.height = this.game.world.height;
 
         //add start button
-        var startButton = this.game.add.sprite(0, 0, 'startButton');
+        var startButton = this.game.add.sprite(0, 10, 'startButton');
+        startButton.width = 400;
+        startButton.height = 160;
 
         startButton.inputEnabled = true;
         startButton.events.onInputDown.add(this.startGame, this);
@@ -16,6 +18,8 @@ mainMenu.prototype = {
         //add quit button
         var quitButton = this.game.add.sprite(this.game.world.width, this.game.world.height, 'quitButton');
         quitButton.anchor.set(1, 1);
+        quitButton.width = 400;
+        startButton.height = 160;
 
         quitButton.inputEnabled = true;
         quitButton.events.onInputDown.add(this.quitGame, this);
