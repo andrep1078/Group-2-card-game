@@ -1,6 +1,13 @@
 var theGame = function (game) {}
 
+var reactionsSpriteSheet;
+
 var counter = 0;
+
+var p1Score = 0;
+var p2Score = 0;
+var p3Score = 0;
+var p4Score = 0;
 
 //array for flags
 var flags = ['nederlands', 'germany', 'china', 'romania'];
@@ -20,11 +27,12 @@ var p3Group;
 var p4Group;
 
 //array for situations
-var situations = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+var situations = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
 //array for reactions
 var reactions = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 
-29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59];
+29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62,
+63, 64, 65, 66, 67];
 
 //discard piles
 var discardSituations = [];
@@ -53,6 +61,12 @@ var p4CardY;
 var style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
 
 theGame.prototype = {
+
+    preload: function () {
+        //loading sprites for reaction deck
+        reactionsSpriteSheet = this.game.load.spritesheet('reaction', 'sprites/reactions.png', 128, 200, 68);
+    },
+
     create: function () {
         //add background
         var background = this.game.add.sprite(0, 0, 'background');
@@ -78,7 +92,7 @@ theGame.prototype = {
             var flag = this.game.add.sprite(xPositions[i], yPositions[i], flags[i]);
             flag.angle = angle[i];
 
-            var text = this.game.add.text(pX[i], pY[i], "2", style);
+            var text = this.game.add.text(pX[i], pY[i], p1Score, style);
             text.angle = angle[i];
         }
 
@@ -136,6 +150,7 @@ theGame.prototype = {
     },
 
     nextSituation: function () {
+        var text;
 
         if ( situations.length != 0) {
             var randomNumber = Math.floor(Math.random()*situations.length);
@@ -151,6 +166,17 @@ theGame.prototype = {
         else {
             this.gameEnds();
         }
+
+        for( var i=0; i<4; i++) {
+            var pX = [380, 1290, 1130, 210];
+            var pY = [610, 700, 110, 37];
+            var angle = [0, -90, -180, 90];
+
+            text = this.game.add.text(pX[i], pY[i], p1Score, style);
+            text.angle = angle[i];
+        }
+
+        console.log(p1Score);
 
         situationDeck.events.onInputDown.removeAll();
     },
@@ -190,8 +216,7 @@ theGame.prototype = {
             reactions.splice(randomNumber, 1);
         }
 
-        console.log('reactions: ' + reactions);
-
+        this.checkAnswer();
         this.changeTurns(p1Group);
     },
 
@@ -228,8 +253,6 @@ theGame.prototype = {
 
             reactions.splice(randomNumber, 1);
         }
-
-        console.log('reactions: ' + reactions);
     },
 
     player3Turn: function () {
@@ -265,8 +288,6 @@ theGame.prototype = {
 
             reactions.splice(randomNumber, 1);
         }
-
-        console.log('reactions: ' + reactions);
     },
 
     player4Turn: function () {
@@ -303,8 +324,6 @@ theGame.prototype = {
 
             reactions.splice(randomNumber, 1);
         }
-
-        console.log('reactions: ' + reactions);
     },
 
     changeTurns: function (playerGroup) {
@@ -348,24 +367,28 @@ theGame.prototype = {
 
                 this.changeTurns(p2Group);
                 p1PlayedCard = sprite;
+                
                 break;
             case 1:
                 sprite.x -= 60;
 
                 this.changeTurns(p3Group);
                 p2PlayedCard = sprite;
+                
                 break;
             case 2:
                 sprite.y += 60;
 
                 this.changeTurns(p4Group);
                 p3PlayedCard = sprite;
+
                 break;
             case 3:
                 sprite.x += 60;
 
                 this.nextSituationEnable();
                 p4PlayedCard = sprite;
+                
                 break;
         }
 
@@ -379,5 +402,27 @@ theGame.prototype = {
 
     quitGame: function () {
         this.game.state.start ("theEnd");
+    },
+
+    checkAnswer: function () {
+        var correctAnswers = [
+            {
+                situation: 0,
+                correctCards: [
+                    reactionsSpriteSheet.frame = 0, 
+                    reactionsSpriteSheet.frame = 1, 
+                    reactionsSpriteSheet.frame = 2, 
+                    reactionsSpriteSheet.frame = 3
+                ]
+            }
+        ]
+
+        //for (var a=0; a<17; a++) {
+            for (var i=0; i < 4; i++) {
+                if (p1PlayedCard == correctAnswers[0].correctCards[i] && situationSprite.frame == correctAnswers[0].situation) {
+                    p1Score++;
+                }
+            }
+       //}
     }
 }

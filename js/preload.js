@@ -15,10 +15,7 @@ preload.prototype = {
         game.load.image('player4sprite', 'sprites/player4.png');*/
 
         //loading sprites for situation deck
-        this.game.load.spritesheet('situation','sprites/situations.png', 128, 200, 15);
-            
-        //loading sprites for reaction deck
-        this.game.load.spritesheet('reaction', 'sprites/reactions.png', 128, 200, 60);
+        this.game.load.spritesheet('situation','sprites/situations.png', 128, 200, 17);
 
         //loading sprites for decks
         this.game.load.image('reactionDeck', 'sprites/reactionBack.png');
