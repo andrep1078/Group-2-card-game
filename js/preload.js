@@ -28,6 +28,10 @@ preload.prototype = {
         this.game.load.image('menuBackground', 'sprites/menuBackground.png');
         this.game.load.image('startButton', 'sprites/startButton.png');
         this.game.load.image('quitButton', 'sprites/quitButton.png');
+
+        //load end sprites
+        this.game.load.image('endBackground', 'sprites/endBackground.png');
+        this.game.load.image('restartButton', 'sprites/restartButton.png');
     },
 
     create: function () {
