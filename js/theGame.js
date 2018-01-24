@@ -414,15 +414,24 @@ theGame.prototype = {
                     reactionsSpriteSheet.frame = 2, 
                     reactionsSpriteSheet.frame = 3
                 ]
+            },
+            {
+                situation: 1,
+                correctCards: [
+                    reactionsSpriteSheet.frame = 4, 
+                    reactionsSpriteSheet.frame = 5, 
+                    reactionsSpriteSheet.frame = 6, 
+                    reactionsSpriteSheet.frame = 7
+                ]
             }
         ]
 
-        //for (var a=0; a<17; a++) {
+        for (var a=0; a<17; a++) {
             for (var i=0; i < 4; i++) {
                 if (p1PlayedCard == correctAnswers[0].correctCards[i] && situationSprite.frame == correctAnswers[0].situation) {
                     p1Score++;
                 }
             }
-       //}
+        }
     }
 }
