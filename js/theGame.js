@@ -380,6 +380,7 @@ theGame.prototype = {
 
         if (p1Group.children.length == 0) {
             for( var i=0; i<5; i++) {
+                var xPosition = [500, 628, 756, 884, 1012];
     
                 var randomNumber = Math.floor(Math.random()*reactions.length);
                 reactionSprite = this.game.add.sprite(xPosition[i], 630, 'reaction');
