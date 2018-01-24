@@ -380,9 +380,6 @@ theGame.prototype = {
 
         if (p1Group.children.length == 0) {
             for( var i=0; i<5; i++) {
-                var xPosition = [500, 628, 756, 884, 1012];
-                /*var card = this.game.add.sprite(xPosition[i], 630, 'reactionDeck');
-                card.anchor.set(0.5, 0.5);*/
     
                 var randomNumber = Math.floor(Math.random()*reactions.length);
                 reactionSprite = this.game.add.sprite(xPosition[i], 630, 'reaction');
@@ -415,9 +412,6 @@ theGame.prototype = {
         if (p2Group.children.length == 0) {
             for( var i=0; i<5; i++) {
                 var yPosition = [70, 198, 326, 454, 582];
-                /*var card = this.game.add.sprite(1300, yPosition[i], 'reactionDeck');
-                card.anchor.set(0.5, 0.5);
-                card.angle = -90;*/
     
                 var randomNumber = Math.floor(Math.random()*reactions.length);
                 reactionSprite = this.game.add.sprite(1300, yPosition[i], 'reaction');
@@ -450,9 +444,6 @@ theGame.prototype = {
         if (p3Group.children.length == 0) {
             for( var i=0; i<5; i++) {
                 var xPosition = [500, 628, 756, 884, 1012];
-                /*var card = this.game.add.sprite(xPosition[i], 100, 'reactionDeck');
-                card.anchor.set(0.5, 0.5);
-                card.angle = 180;*/
     
                 var randomNumber = Math.floor(Math.random()*reactions.length);
                 reactionSprite = this.game.add.sprite(xPosition[i], 100, 'reaction');
@@ -485,9 +476,6 @@ theGame.prototype = {
         if (p4Group.children.length == 0) {
             for( var i=0; i<5; i++) {
                 var yPosition = [150, 278, 406, 534, 662];
-                /*var card = this.game.add.sprite(200, yPosition[i], 'reactionDeck');
-                card.anchor.set(0.5, 0.5);
-                card.angle = 90;*/
     
                 var randomNumber = Math.floor(Math.random()*reactions.length);
                 reactionSprite = this.game.add.sprite(200, yPosition[i], 'reaction');
@@ -697,6 +685,5 @@ theGame.prototype = {
                 }
             }
         }
-        console.log(p4Score);
     }
 }
