@@ -216,7 +216,6 @@ theGame.prototype = {
             reactions.splice(randomNumber, 1);
         }
 
-        this.checkAnswer();
         this.changeTurns(p1Group);
     },
 
@@ -363,10 +362,12 @@ theGame.prototype = {
 
         switch (counter) {
             case 0:
-                sprite.y -= 60;
+                sprite.y -= 60; 
 
                 this.changeTurns(p2Group);
                 p1PlayedCard = sprite;
+
+                this.checkAnswer();
                 
                 break;
             case 1:
@@ -405,32 +406,39 @@ theGame.prototype = {
     },
 
     checkAnswer: function () {
+
         var correctAnswers = [
             {
                 situation: 0,
                 correctCards: [
-                    reactionsSpriteSheet.frame = 0, 
-                    reactionsSpriteSheet.frame = 1, 
-                    reactionsSpriteSheet.frame = 2, 
-                    reactionsSpriteSheet.frame = 3
+                    0, 
+                    1, 
+                    2, 
+                    3
                 ]
             },
             {
                 situation: 1,
                 correctCards: [
-                    reactionsSpriteSheet.frame = 4, 
-                    reactionsSpriteSheet.frame = 5, 
-                    reactionsSpriteSheet.frame = 6, 
-                    reactionsSpriteSheet.frame = 7
+                    4, 
+                    5, 
+                    6, 
+                    7
                 ]
-            }
+            },
         ]
 
-        for (var a=0; a<17; a++) {
-            for (var i=0; i < 4; i++) {
-                if (p1PlayedCard === correctAnswers[0].correctCards[i] && situationSprite.frame === correctAnswers[0].situation) {
-                    p1Score++;
-                }
+        debugger;
+
+        for (var i=0; i < 4; i++) {
+            if (p1PlayedCard.frame == correctAnswers[0].correctCards[i] && situationSprite.frame == correctAnswers[0].situation) {
+                p1Score++;
+            }
+        }
+
+        for (var i=0; i < 4; i++) {
+            if (p1PlayedCard.frame == correctAnswers[1].correctCards[i] && situationSprite.frame == correctAnswers[1].situation) {
+                p1Score++;
             }
         }
     }
