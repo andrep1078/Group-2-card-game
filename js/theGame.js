@@ -167,6 +167,7 @@ var p4Score = 0;
 
 //array for flags
 var flags = ['nederlands', 'germany', 'china', 'romania'];
+var countriesArray = ['china', 'germany', 'nederlands', 'romania'];
         
 //arrays position values for flags
 var xPositions = [350, 1340, 1160, 160];
@@ -295,10 +296,8 @@ theGame.prototype = {
         this.player4Turn ();
     },
 
-    nextSituationEnable: function () {
-        situationDeck.inputEnabled = true;
-        situationDeck.events.onInputDown.add(this.situation, this);
-
+    printScore: function () {
+        
         text1.destroy();
         text2.destroy();
         text3.destroy();
@@ -321,6 +320,11 @@ theGame.prototype = {
         text4.angle = angle[3];
     },
 
+    nextSituationEnable: function () {
+        situationDeck.inputEnabled = true;
+        situationDeck.events.onInputDown.add(this.situation, this);
+    },
+
     situation: function () {
         this.nextSituation();
 
@@ -332,6 +336,8 @@ theGame.prototype = {
         p3CardY = p3PlayedCard.y;
         p4CardX = p4PlayedCard.x;
         p4CardY = p4PlayedCard.y;
+
+        this.printScore();
 
         p1PlayedCard.destroy();
         p2PlayedCard.destroy();
@@ -577,6 +583,8 @@ theGame.prototype = {
 
                 this.nextSituationEnable();
                 p4PlayedCard = sprite;
+
+                this.checkAnswer4()
                 
                 break;
         }
@@ -594,422 +602,101 @@ theGame.prototype = {
     },
 
     checkAnswer1: function () {
+        var index;
 
-        for (var i=0; i < 4; i++) {
-            if (p1PlayedCard.frame == correctAnswers[0].correctCards[i] && situationSprite.frame == correctAnswers[0].situation) {
-                p1Score++;
+        for (var i=0; i < 17; i++) {
+            if (flags[0] === countriesArray[i]) {
+                index = i;
             }
         }
 
-        for (var i=0; i < 4; i++) {
-            if (p1PlayedCard.frame == correctAnswers[1].correctCards[i] && situationSprite.frame == correctAnswers[1].situation) {
-                p1Score++;
+        for (var a=0; a < 17; a++) {
+            if (p1PlayedCard.frame == correctAnswers[a].correctCards[index] && situationSprite.frame == correctAnswers[a].situation) {
+                p1Score += 2;
             }
-        }
 
-        for (var i=0; i < 4; i++) {
-            if (p1PlayedCard.frame == correctAnswers[2].correctCards[i] && situationSprite.frame == correctAnswers[2].situation) {
-                p1Score++;
-            }
-        }
-
-        for (var i=0; i < 4; i++) {
-            if (p1PlayedCard.frame == correctAnswers[3].correctCards[i] && situationSprite.frame == correctAnswers[3].situation) {
-                p1Score++;
-            }
-        }
-
-        for (var i=0; i < 4; i++) {
-            if (p1PlayedCard.frame == correctAnswers[4].correctCards[i] && situationSprite.frame == correctAnswers[4].situation) {
-                p1Score++;
-            }
-        }
-
-        for (var i=0; i < 4; i++) {
-            if (p1PlayedCard.frame == correctAnswers[5].correctCards[i] && situationSprite.frame == correctAnswers[5].situation) {
-                p1Score++;
-            }
-        }
-
-        for (var i=0; i < 4; i++) {
-            if (p1PlayedCard.frame == correctAnswers[6].correctCards[i] && situationSprite.frame == correctAnswers[6].situation) {
-                p1Score++;
-            }
-        }
-
-        for (var i=0; i < 4; i++) {
-            if (p1PlayedCard.frame == correctAnswers[7].correctCards[i] && situationSprite.frame == correctAnswers[7].situation) {
-                p1Score++;
-            }
-        }
-
-        for (var i=0; i < 4; i++) {
-            if (p1PlayedCard.frame == correctAnswers[8].correctCards[i] && situationSprite.frame == correctAnswers[8].situation) {
-                p1Score++;
-            }
-        }
-
-        for (var i=0; i < 4; i++) {
-            if (p1PlayedCard.frame == correctAnswers[9].correctCards[i] && situationSprite.frame == correctAnswers[9].situation) {
-                p1Score++;
-            }
-        }
-
-        for (var i=0; i < 4; i++) {
-            if (p1PlayedCard.frame == correctAnswers[10].correctCards[i] && situationSprite.frame == correctAnswers[10].situation) {
-                p1Score++;
-            }
-        }
-
-        for (var i=0; i < 4; i++) {
-            if (p1PlayedCard.frame == correctAnswers[11].correctCards[i] && situationSprite.frame == correctAnswers[11].situation) {
-                p1Score++;
-            }
-        }
-
-        for (var i=0; i < 4; i++) {
-            if (p1PlayedCard.frame == correctAnswers[12].correctCards[i] && situationSprite.frame == correctAnswers[12].situation) {
-                p1Score++;
-            }
-        }
-
-        for (var i=0; i < 4; i++) {
-            if (p1PlayedCard.frame == correctAnswers[13].correctCards[i] && situationSprite.frame == correctAnswers[13].situation) {
-                p1Score++;
-            }
-        }
-
-        for (var i=0; i < 4; i++) {
-            if (p1PlayedCard.frame == correctAnswers[14].correctCards[i] && situationSprite.frame == correctAnswers[14].situation) {
-                p1Score++;
-            }
-        }
-
-        for (var i=0; i < 4; i++) {
-            if (p1PlayedCard.frame == correctAnswers[15].correctCards[i] && situationSprite.frame == correctAnswers[15].situation) {
-                p1Score++;
-            }
-        }
-
-        for (var i=0; i < 4; i++) {
-            if (p1PlayedCard.frame == correctAnswers[16].correctCards[i] && situationSprite.frame == correctAnswers[16].situation) {
-                p1Score++;
+            else {
+                for (var i=0; i < 4; i++) {
+                    if (p1PlayedCard.frame == correctAnswers[a].correctCards[i] && situationSprite.frame == correctAnswers[a].situation) {
+                        p1Score++;
+                    }
+                }
             }
         }
     },
 
     checkAnswer2: function () {
         
-        for (var i = 0; i < 4; i++) {
-            if (p2PlayedCard.frame == correctAnswers[0].correctCards[i] && situationSprite.frame == correctAnswers[0].situation) {
-                p2Score++;
+        var index;
+
+        for (var i = 0; i < 17; i++) {
+            if (flags[1] === countriesArray[i]) {
+                index = i;
             }
         }
 
-        for (var i = 0; i < 4; i++) {
-            if (p2PlayedCard.frame == correctAnswers[1].correctCards[i] && situationSprite.frame == correctAnswers[1].situation) {
-                p2Score++;
+        for (var a = 0; a < 17; a++) {
+            if (p2PlayedCard.frame == correctAnswers[a].correctCards[index] && situationSprite.frame == correctAnswers[a].situation) {
+                p2Score += 2;
             }
-        }
 
-        for (var i = 0; i < 4; i++) {
-            if (p2PlayedCard.frame == correctAnswers[2].correctCards[i] && situationSprite.frame == correctAnswers[2].situation) {
-                p2Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p2PlayedCard.frame == correctAnswers[3].correctCards[i] && situationSprite.frame == correctAnswers[3].situation) {
-                p2Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p2PlayedCard.frame == correctAnswers[4].correctCards[i] && situationSprite.frame == correctAnswers[4].situation) {
-                p2Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p2PlayedCard.frame == correctAnswers[5].correctCards[i] && situationSprite.frame == correctAnswers[5].situation) {
-                p2Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p2PlayedCard.frame == correctAnswers[6].correctCards[i] && situationSprite.frame == correctAnswers[6].situation) {
-                p2Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p2PlayedCard.frame == correctAnswers[7].correctCards[i] && situationSprite.frame == correctAnswers[7].situation) {
-                p2Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p2PlayedCard.frame == correctAnswers[8].correctCards[i] && situationSprite.frame == correctAnswers[8].situation) {
-                p2Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p2PlayedCard.frame == correctAnswers[9].correctCards[i] && situationSprite.frame == correctAnswers[9].situation) {
-                p2Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p2PlayedCard.frame == correctAnswers[10].correctCards[i] && situationSprite.frame == correctAnswers[10].situation) {
-                p2Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p2PlayedCard.frame == correctAnswers[11].correctCards[i] && situationSprite.frame == correctAnswers[11].situation) {
-                p2Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p2PlayedCard.frame == correctAnswers[12].correctCards[i] && situationSprite.frame == correctAnswers[12].situation) {
-                p2Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p2PlayedCard.frame == correctAnswers[13].correctCards[i] && situationSprite.frame == correctAnswers[13].situation) {
-                p2Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p2PlayedCard.frame == correctAnswers[14].correctCards[i] && situationSprite.frame == correctAnswers[14].situation) {
-                p2Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p2PlayedCard.frame == correctAnswers[15].correctCards[i] && situationSprite.frame == correctAnswers[15].situation) {
-                p2Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p2PlayedCard.frame == correctAnswers[16].correctCards[i] && situationSprite.frame == correctAnswers[16].situation) {
-                p2Score++;
+            else {
+                for (var i = 0; i < 4; i++) {
+                    if (p2PlayedCard.frame == correctAnswers[a].correctCards[i] && situationSprite.frame == correctAnswers[a].situation) {
+                        p2Score++;
+                    }
+                }
             }
         }
     },
 
     checkAnswer3: function () {
         
-        for (var i = 0; i < 4; i++) {
-            if (p3PlayedCard.frame == correctAnswers[0].correctCards[i] && situationSprite.frame == correctAnswers[0].situation) {
-                p3Score++;
+        var index;
+        
+        for (var i = 0; i < 17; i++) {
+            if (flags[2] === countriesArray[i]) {
+                index = i;
             }
         }
 
-        for (var i = 0; i < 4; i++) {
-            if (p3PlayedCard.frame == correctAnswers[1].correctCards[i] && situationSprite.frame == correctAnswers[1].situation) {
-                p3Score++;
+        for (var a = 0; a < 17; a++) {
+            if (p3PlayedCard.frame == correctAnswers[a].correctCards[index] && situationSprite.frame == correctAnswers[a].situation) {
+                p3Score += 2;
             }
-        }
 
-        for (var i = 0; i < 4; i++) {
-            if (p3PlayedCard.frame == correctAnswers[2].correctCards[i] && situationSprite.frame == correctAnswers[2].situation) {
-                p3Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p3PlayedCard.frame == correctAnswers[3].correctCards[i] && situationSprite.frame == correctAnswers[3].situation) {
-                p3Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p3PlayedCard.frame == correctAnswers[4].correctCards[i] && situationSprite.frame == correctAnswers[4].situation) {
-                p3Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p3PlayedCard.frame == correctAnswers[5].correctCards[i] && situationSprite.frame == correctAnswers[5].situation) {
-                p3Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p3PlayedCard.frame == correctAnswers[6].correctCards[i] && situationSprite.frame == correctAnswers[6].situation) {
-                p3Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p3PlayedCard.frame == correctAnswers[7].correctCards[i] && situationSprite.frame == correctAnswers[7].situation) {
-                p3Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p3PlayedCard.frame == correctAnswers[8].correctCards[i] && situationSprite.frame == correctAnswers[8].situation) {
-                p3Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p3PlayedCard.frame == correctAnswers[9].correctCards[i] && situationSprite.frame == correctAnswers[9].situation) {
-                p3Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p3PlayedCard.frame == correctAnswers[10].correctCards[i] && situationSprite.frame == correctAnswers[10].situation) {
-                p3Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p3PlayedCard.frame == correctAnswers[11].correctCards[i] && situationSprite.frame == correctAnswers[11].situation) {
-                p3Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p3PlayedCard.frame == correctAnswers[12].correctCards[i] && situationSprite.frame == correctAnswers[12].situation) {
-                p3Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p3PlayedCard.frame == correctAnswers[13].correctCards[i] && situationSprite.frame == correctAnswers[13].situation) {
-                p3Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p3PlayedCard.frame == correctAnswers[14].correctCards[i] && situationSprite.frame == correctAnswers[14].situation) {
-                p3Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p3PlayedCard.frame == correctAnswers[15].correctCards[i] && situationSprite.frame == correctAnswers[15].situation) {
-                p3Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p3PlayedCard.frame == correctAnswers[16].correctCards[i] && situationSprite.frame == correctAnswers[16].situation) {
-                p3Score++;
+            else {
+                for (var i = 0; i < 4; i++) {
+                    if (p3PlayedCard.frame == correctAnswers[a].correctCards[i] && situationSprite.frame == correctAnswers[a].situation) {
+                        p3Score++;
+                    }
+                }
             }
         }
     },
 
     checkAnswer4: function () {
+        var index;
         
-        for (var i = 0; i < 4; i++) {
-            if (p4PlayedCard.frame == correctAnswers[0].correctCards[i] && situationSprite.frame == correctAnswers[0].situation) {
-                p4Score++;
+        for (var i = 0; i < 17; i++) {
+            if (flags[3] === countriesArray[i]) {
+                index = i;
             }
         }
 
-        for (var i = 0; i < 4; i++) {
-            if (p4PlayedCard.frame == correctAnswers[1].correctCards[i] && situationSprite.frame == correctAnswers[1].situation) {
-                p4Score++;
+        for (var a = 0; a < 17; a++) {
+            if (p4PlayedCard.frame == correctAnswers[a].correctCards[index] && situationSprite.frame == correctAnswers[a].situation) {
+                p4Score += 2;
             }
-        }
 
-        for (var i = 0; i < 4; i++) {
-            if (p4PlayedCard.frame == correctAnswers[2].correctCards[i] && situationSprite.frame == correctAnswers[2].situation) {
-                p4Score++;
+            else {
+                for (var i = 0; i < 4; i++) {
+                    if (p4PlayedCard.frame == correctAnswers[a].correctCards[i] && situationSprite.frame == correctAnswers[a].situation) {
+                        p4Score++;
+                    }
+                }
             }
         }
-
-        for (var i = 0; i < 4; i++) {
-            if (p4PlayedCard.frame == correctAnswers[3].correctCards[i] && situationSprite.frame == correctAnswers[3].situation) {
-                p4Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p4PlayedCard.frame == correctAnswers[4].correctCards[i] && situationSprite.frame == correctAnswers[4].situation) {
-                p4Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p4PlayedCard.frame == correctAnswers[5].correctCards[i] && situationSprite.frame == correctAnswers[5].situation) {
-                p4Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p4PlayedCard.frame == correctAnswers[6].correctCards[i] && situationSprite.frame == correctAnswers[6].situation) {
-                p4Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p4PlayedCard.frame == correctAnswers[7].correctCards[i] && situationSprite.frame == correctAnswers[7].situation) {
-                p4Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p4PlayedCard.frame == correctAnswers[8].correctCards[i] && situationSprite.frame == correctAnswers[8].situation) {
-                p4Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p4PlayedCard.frame == correctAnswers[9].correctCards[i] && situationSprite.frame == correctAnswers[9].situation) {
-                p4Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p4PlayedCard.frame == correctAnswers[10].correctCards[i] && situationSprite.frame == correctAnswers[10].situation) {
-                p4Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p4PlayedCard.frame == correctAnswers[11].correctCards[i] && situationSprite.frame == correctAnswers[11].situation) {
-                p4Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p3PlayedCard.frame == correctAnswers[12].correctCards[i] && situationSprite.frame == correctAnswers[12].situation) {
-                p4Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p4PlayedCard.frame == correctAnswers[13].correctCards[i] && situationSprite.frame == correctAnswers[13].situation) {
-                p4Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p4PlayedCard.frame == correctAnswers[14].correctCards[i] && situationSprite.frame == correctAnswers[14].situation) {
-                p4Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p4PlayedCard.frame == correctAnswers[15].correctCards[i] && situationSprite.frame == correctAnswers[15].situation) {
-                p4Score++;
-            }
-        }
-
-        for (var i = 0; i < 4; i++) {
-            if (p4PlayedCard.frame == correctAnswers[16].correctCards[i] && situationSprite.frame == correctAnswers[16].situation) {
-                p4Score++;
-            }
-        }
+        console.log(p4Score);
     }
 }
