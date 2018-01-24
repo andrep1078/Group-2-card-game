@@ -7,15 +7,6 @@ theEnd.prototype = {
         background.width = this.game.world.width;
         background.height = this.game.world.height;
 
-        //add restart buttom
-        var restart = this.game.add.sprite(this.game.world.width - 20, this.game.world.height, 'restartButton');
-        restart.anchor.set(1, 1);
-        restart.width = 360;
-        restart.height = 144;
-
-        restart.inputEnabled = true;
-        restart.events.onInputDown.add(this.restartGame, this);
-
         //add flags
         for( var i=0; i<4; i++) {
             var yPos = [50, 200, 350, 500]
@@ -33,8 +24,4 @@ theEnd.prototype = {
         this.game.add.text(600, 350, p3Score, style1);
         this.game.add.text(600, 500, p4Score, style1);
     },
-
-    restartGame: function() {
-        this.game.state.start ("mainMenu");
-    }
 }
