@@ -428,7 +428,7 @@ theGame.prototype = {
 
         for (var a=0; a<17; a++) {
             for (var i=0; i < 4; i++) {
-                if (p1PlayedCard == correctAnswers[0].correctCards[i] && situationSprite.frame == correctAnswers[0].situation) {
+                if (p1PlayedCard === correctAnswers[0].correctCards[i] && situationSprite.frame === correctAnswers[0].situation) {
                     p1Score++;
                 }
             }
